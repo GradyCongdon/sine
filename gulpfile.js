@@ -62,6 +62,11 @@ gulp.task('copy', function() {
       .pipe(gulp.dest('dist'));
 });
 
+gulp.task('pages', function() {
+  return gulp.src('dist/*')
+      .pipe(gulp.dest('docs'));
+});
+
 gulp.task('watch', function() {
   gulp.watch(paths.styles, ['sass']);
   gulp.watch(paths.scripts, ['js']);
