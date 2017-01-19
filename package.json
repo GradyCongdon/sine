@@ -1,0 +1,33 @@
+{
+  "name": "sine",
+  "version": "1.0.0",
+  "description": "Trying to surf some sine waves",
+  "main": "app.js",
+  "dependencies": {
+    "gulp": "^3.9.1"
+  },
+  "devDependencies": {
+    "babel-preset-latest": "^6.16.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^3.1.0",
+    "gulp-sourcemaps": "^2.4.0"
+  },
+  "scripts": {
+    "test": "gulp test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/gradycongdon/sine"
+  },
+  "keywords": [
+    "Web Audio"
+  ],
+  "author": "Grady Congdon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gradycongdon/sine/issues"
+  },
+  "homepage": "https://github.com/gradycongdon/sine"
+}
