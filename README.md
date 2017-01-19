@@ -1,8 +1,3 @@
-∿
-=
+### ∿
+### https://gradycongdon.github.io/sine/
 
-https://gradycongdon.github.io/sine/
------------------------------------
-
-
-∿
