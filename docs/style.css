@@ -70,12 +70,14 @@ body {
   min-height: 45px;
   max-height: 245px;
   border: 2px solid white;
-  margin: 3px; }
-
-.on {
-  background: white;
-  color: steelblue; }
-
-.ebony {
-  border-color: black;
-  color: black; }
+  margin: 3px;
+  user-select: none;
+  cursor: pointer; }
+  .key:hover {
+    background: rgba(255, 255, 255, 0.1); }
+  .key.on {
+    background: white;
+    color: steelblue; }
+  .key.ebony {
+    border-color: black;
+    color: black; }
