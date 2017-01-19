@@ -33,14 +33,22 @@ body {
   max-height: 245px;
   border: 2px solid white;
   margin: 3px;
+  user-select: none;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(255,255,255,.1);
+  }
+
+  &.on {
+    background: white;
+    color: steelblue;
+  }
+  &.ebony {
+    border-color: black;
+    color: black;
+  }
 }
 
-.on {
-  background: white;
-  color: steelblue;
-}
 
-.ebony {
-  border-color: black;
-  color: black;
-}
+
