@@ -1,13 +1,19 @@
 @import 'reset';
+
+$cyan: #30FBE6;
+$red: #F92725;
+$black: #030005;
+$white: #FCFADE;
+
 html {
   height: 100%;
   width: 100%;
 }
 
 body {
-  background: steelblue;
-  color: white;
-  font: Helvetica;
+  background: $black;
+  color: $white;
+  font: Arial;
   width: 100%;
   height: 100%;
   display: flex;
@@ -41,12 +47,17 @@ body {
   }
 
   &.on {
-    background: white;
-    color: steelblue;
+    background: $white;
+    color: $black;
+
+    &.ebony {
+      background: $cyan;
+      color: $black;
+    }
   }
   &.ebony {
-    border-color: black;
-    color: black;
+    border-color: $cyan;
+    color: $cyan;
   }
 }
 
