@@ -3,10 +3,9 @@ var babel = require('gulp-babel');
 var rename = require("gulp-rename");
 var sass = require("gulp-sass");
 var sourcemaps = require("gulp-sourcemaps");
-//
-// var uglify = require('gulp-uglify');
-// var concat = require('gulp-concat');
-// var cssnano = require("gulp-cssnano");
+var inline = require("gulp-inline");
+var uglify = require("gulp-uglify");
+var del = require('del');
 
 var paths = {
   scripts: 'src/*.es6',
@@ -15,14 +14,29 @@ var paths = {
 }
 
 
-gulp.task('default',['copy', 'js', 'sass', 'watch']);
+gulp.task('default', ['clean', 'dev']); // TODO make series
+gulp.task('dev', ['copy', 'js-dev', 'sass', 'watch']);
 
 function handleError(error) {
   console.error(String(error));
   this.emit('end');
 }
 
+gulp.task('clean', function() {
+  return del('/dist/*');
+});
+
 gulp.task('js', function(){
+  return gulp.src(paths.scripts)
+      .pipe(babel({
+        presets: ['latest']
+      }))
+      .on('error', handleError)
+      .pipe(rename({extname: '.js'}))
+      .pipe(gulp.dest('dist'));
+});
+
+gulp.task('js-dev', function(){
   return gulp.src(paths.scripts)
       .pipe(sourcemaps.init())
       .pipe(babel({
@@ -31,22 +45,6 @@ gulp.task('js', function(){
       .on('error', handleError)
       .pipe(rename({extname: '.js'}))
       .pipe(sourcemaps.write())
-      .pipe(gulp.dest('dist'));
-});
-
-gulp.task('js-prod', function(){
-  return gulp.src(paths.scripts)
-      .pipe(babel({ presets: ['es2015'] }))
-    //  .pipe(concat('all.js'))
-   //    .pipe(uglify())
-      .pipe(rename("all.min.js"))
-      .pipe(gulp.dest('dist'));
-});
-
-gulp.task('babel', function(){
-  return gulp.src(paths.scripts)
-      .pipe(babel({ presets: ['es2015'] }))
-      .pipe(rename("all-ES2015.js"))
       .pipe(gulp.dest('dist'));
 });
 
@@ -62,7 +60,18 @@ gulp.task('copy', function() {
       .pipe(gulp.dest('dist'));
 });
 
-gulp.task('pages', function() {
+gulp.task('inline', ['js', 'sass', 'copy'], function() {
+  gulp.src('dist/index.html')
+  .pipe(inline({
+    base: 'dist/',
+    js: uglify,
+    disabledTypes: ['svg', 'img'],
+  }))
+  .pipe(gulp.dest('dist/'));
+});
+
+gulp.task('build', ['inline'], function() {
+  console.log('js, sass, copy... inline...  cp to docs');
   return gulp.src('dist/*')
       .pipe(gulp.dest('docs'));
 });
