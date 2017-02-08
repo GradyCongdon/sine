@@ -6,6 +6,7 @@ var sourcemaps = require("gulp-sourcemaps");
 var inline = require("gulp-inline");
 var uglify = require("gulp-uglify");
 var del = require('del');
+var sourcemaps = require("gulp-webserver");
 
 var paths = {
   scripts: 'src/*.es6',
@@ -81,3 +82,12 @@ gulp.task('watch', function() {
   gulp.watch(paths.scripts, ['js']);
   gulp.watch(paths.html, ['copy']);
 })
+
+gulp.task('serve', function() {
+  gulp.src('dist')
+    .pipe(webserver({
+      livereload: true,
+      fallback: 'index.html',
+      host: '0.0.0.0',
+    }));
+});
