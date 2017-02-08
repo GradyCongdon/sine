@@ -6,7 +6,7 @@ var sourcemaps = require("gulp-sourcemaps");
 var inline = require("gulp-inline");
 var uglify = require("gulp-uglify");
 var del = require('del');
-var sourcemaps = require("gulp-webserver");
+var webserver = require("gulp-webserver");
 
 var paths = {
   scripts: 'src/*.es6',
