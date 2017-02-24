@@ -7,6 +7,9 @@ var inline = require("gulp-inline");
 var uglify = require("gulp-uglify");
 var del = require('del');
 var webserver = require("gulp-webserver");
+var browserify = require("browserify");
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
 
 var paths = {
   scripts: 'src/*.es6',
@@ -16,7 +19,7 @@ var paths = {
 
 
 gulp.task('default', ['clean', 'dev']); // TODO make series
-gulp.task('dev', ['copy', 'js-dev', 'sass', 'watch']);
+gulp.task('dev', ['js', 'sass', 'copy', 'watch']);
 
 function handleError(error) {
   console.error(String(error));
@@ -28,25 +31,20 @@ gulp.task('clean', function() {
 });
 
 gulp.task('js', function(){
-  return gulp.src(paths.scripts)
-      .pipe(babel({
-        presets: ['latest']
-      }))
-      .on('error', handleError)
-      .pipe(rename({extname: '.js'}))
-      .pipe(gulp.dest('dist'));
-});
 
-gulp.task('js-dev', function(){
-  return gulp.src(paths.scripts)
-      .pipe(sourcemaps.init())
-      .pipe(babel({
-        presets: ['latest']
-      }))
-      .on('error', handleError)
-      .pipe(rename({extname: '.js'}))
-      .pipe(sourcemaps.write())
-      .pipe(gulp.dest('dist'));
+  var b = browserify({
+    entries: 'src/app.es6',
+    debug: true
+  });
+  return b
+    .transform("babelify", {presets: ['latest']})
+    .on('error', handleError)
+    .bundle()
+    .on('error', handleError)
+    .pipe(source('app.es6'))
+    .pipe(buffer())
+    .pipe(rename({extname: '.js'}))
+    .pipe(gulp.dest('dist'));
 });
 
 gulp.task('sass', function() {
@@ -61,6 +59,13 @@ gulp.task('copy', function() {
       .pipe(gulp.dest('dist'));
 });
 
+gulp.task('watch', function() {
+  gulp.watch(paths.styles, ['sass']);
+  gulp.watch(paths.scripts, ['js']);
+  gulp.watch(paths.html, ['copy']);
+})
+
+/*
 gulp.task('inline', ['js', 'sass', 'copy'], function() {
   gulp.src('dist/index.html')
   .pipe(inline({
@@ -70,18 +75,12 @@ gulp.task('inline', ['js', 'sass', 'copy'], function() {
   }))
   .pipe(gulp.dest('dist/'));
 });
+*/
 
-gulp.task('build', ['inline'], function() {
-  console.log('js, sass, copy... inline...  cp to docs');
-  return gulp.src('dist/*')
+gulp.task('pages', function() {
+  return gulp.src(['dist/style.css', 'dist/app.js', 'dist/index.html'])
       .pipe(gulp.dest('docs'));
 });
-
-gulp.task('watch', function() {
-  gulp.watch(paths.styles, ['sass']);
-  gulp.watch(paths.scripts, ['js']);
-  gulp.watch(paths.html, ['copy']);
-})
 
 gulp.task('serve', function() {
   gulp.src('dist')

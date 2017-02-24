@@ -1,37 +1,47 @@
-import { Sequencer } from './sequencer.js';
-import { Synth } from './synth.js';
-import { Convert } from './convert.js';
-import { UI } from './ui.js';
+import { Synth } from './synth.es6';
+import { UI } from './ui.es6';
+// import { Sequencer } from './sequencer.es6';
 
-const con = new AudioContext();
-const seq = new Sequencer(con, 120);
-const gain = con.creatGain();
-seq.addAction(0, gain, 1);
+const audioContext = new AudioContext();
+const output = audioContext.destination;
+
+// const sequencer = new Sequencer(audioContext, 120);
+// const gain = audioContext.createGain();
+// sequencer.newAction(0, gain, 1);
 
 
-const keys = [
+let notes = [
   'A4',
   'Bb4',
   'B4',
   'C4',
-  'Db5',
-  'D5',
-  'Eb5',
-  'E5',
-  'F5',
-  'Gb5',
-  'G5',
+  'Db4',
+  'D4',
+  'Eb4',
+  'E4',
+  'F4',
+  'Gb4',
+  'G4',
   'Ab5',
   'A5',
 ];
 
-let synth = [];
+let synth = new Synth(audioContext, output);
 const content = document.getElementById('content');
 
-keys.forEach((key) => {
-  const osc = Synth.setupOscillator(key);
-  synth.push(osc);
-  content.appendChild(UI.makeKey(key));
+notes.forEach((note) => {
+  synth.createNote(note);
+  const action = () => {
+    const on = UI.toggle(note);
+    synth.toggle(note, on);
+  };
+  const key = UI.makeKey(note, action);
+  content.appendChild(key);
 });
 
-console.log('surfin on sine waves');
+if (content.childElementCount) {
+  console.log('surfin on sine waves');
+} else {
+  content.innerHTML = 'broke it ¯\\_(ツ)_/¯';
+}
+

@@ -13,28 +13,29 @@ export class Convert {
   }
 
   static stringToNote(str) {
-    note = str.slice(0, str.length);
-    octave = str.slice(str.length-1);
+    const octaveIndex = str.match(/[0-9]/).index;
+    const octave = str.slice(octaveIndex);
+    const note = str.slice(0, octaveIndex);
     return { note, octave };
   }
 
   static freqFromNote(inputNote) {
-    if (typeof inputNote === 'String') { 
-      inputNote = stringToNote(inputNote);
-    }
-    const { note, octave } = inputNote;
+    if (typeof inputNote !== 'string') return null;
+    const { note, octave } =  Convert.stringToNote(inputNote);
     const semi = notes.indexOf(note);
-    const freq = freqFromStep(semi);
-    const base = octave - 4;
-    let out;
-    if (base > 0) {
-      out = freq * n.octave;
-    } else if (base < 0) {
-      out = freq / octave;
-    } else {
-      out = freq;
-    }
-    return out;
+    let freq = Convert.freqFromStep(semi);
+    let diff = octave - 4;
+    let dir = Math.sign(diff);
+    while (diff) {
+      if (dir === 1) {
+        freq *= 2;
+        diff--;
+      } else {
+        freq /= 2;
+        diff++;
+      }
+    };
+    return freq;
   }
 
   static round(number, precision) {

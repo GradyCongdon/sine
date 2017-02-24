@@ -1,14 +1,19 @@
+import { Convert } from './convert.es6';
+
 export class UI {
 
-  static makeKey(key) {
-    const ivory = document.createElement('div');
-    ivory.id = key;
-    ivory.innerHTML = key;
-    ivory.dataset.frequency = round(t(key), 3);
-    ivory.classList.add('key');
-    if (key.match('b')) ivory.classList.add('ebony');
-    ivory.addEventListener('click', toggle);
-    return ivory;
+  static makeKey(note, toggleAction) {
+    const key = document.createElement('div');
+    key.id = note;
+    key.innerHTML = note;
+    key.classList.add('key');
+
+    if (note.match('b')) key.classList.add('ebony');
+    const freq = Convert.freqFromNote(note);
+    key.dataset.frequency = Convert.round(freq, 3);
+
+    key.addEventListener('click', toggleAction);
+    return key;
   }
 
   static makeStep(num) {
@@ -18,17 +23,11 @@ export class UI {
     step.addEventListener('click', sequence);
     return step;
   }
-}
 
-export function toggle(event) {
-  const key = event.target;
-  const on = key.classList.toggle('on');
-  // Lookup components on target
-  // Run on funcs for each
-  if (on) { 
-    // FIXME synth global
-    synth[key.id].gain.gain.value = 0.5;
-  } else {
-    synth[key.id].gain.gain.value = 0;
+  static toggle(note) {
+    const key = document.getElementById(note);
+    const on = key.classList.toggle('on');
+    return on;
   }
 }
+

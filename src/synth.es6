@@ -1,25 +1,46 @@
+import { Convert } from './convert.es6';
 export class Synth {
-  static setupOscillator(inputNote) {
+  constructor(context, output) {
+    this.audioContext = context;
+    this.output = output;
+    this.oscillators = {};
+    this.gains = {};
+  }
+  createNote(inputNote) {
     const note = inputNote;
     const freq = Convert.freqFromNote(note);
-    const osc = createOscillator(freq);
-    const gain = createGain();
+    const osc = this.createOscillator(freq);
+    const gain = this.createGain();
     osc.connect(gain);
     osc.start();
-    return { note, osc, gain };
+    this.oscillators[inputNote] = osc;
+    this.gains[inputNote] = gain;
   }
 
-  static createGain() {
-      const g = con.createGain();
-      g.connect(out);
-      g.gain.value = 0;
-      return g;
+  createGain() {
+    const g = this.audioContext.createGain();
+    g.connect(this.output);
+    g.gain.value = 0;
+    return g;
   }
 
-  static createOscillator(freq, type = 'sine') {
-      const o = con.createOscillator();
+  createOscillator( freq, type = 'sine') {
+      const o = this.audioContext.createOscillator();
       o.type = type;
       o.frequency.value = freq;
       return o;
+  }
+  toggle(key, on) {
+    if (on) {
+      this.on(key);
+    } else {
+      this.off(key);
+    }
+  }
+  on(key, volume = 0.5) {
+    this.gains[key].gain.value = volume;
+  }
+  off(key) {
+    this.gains[key].gain.value = 0;
   }
 }
