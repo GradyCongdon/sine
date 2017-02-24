@@ -5,7 +5,7 @@ export class UI {
   static makeKey(note, toggleAction) {
     const key = document.createElement('div');
     key.id = note;
-    key.innerHTML = note;
+    key.innerHTML = note.replace('b', '♭');
     key.classList.add('key');
 
     if (note.match('b')) key.classList.add('ebony');
