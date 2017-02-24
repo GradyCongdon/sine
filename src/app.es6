@@ -2,7 +2,8 @@ import { Synth } from './synth.es6';
 import { UI } from './ui.es6';
 // import { Sequencer } from './sequencer.es6';
 
-const audioContext = new AudioContext();
+var audio =  window.AudioContext || window.webkitAudioContext;
+const audioContext = new audio();
 const output = audioContext.destination;
 
 // const sequencer = new Sequencer(audioContext, 120);
