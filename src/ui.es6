@@ -24,6 +24,24 @@ export class UI {
     return step;
   }
 
+  static makeStop(action) {
+    if (!action) throw Error ('no stop action');
+    const stop = document.createElement('div');
+    stop.id = 'stop'
+    stop.classList.add('stop');
+    stop.addEventListener('click', action);
+    return stop;
+  }
+
+  static makePlay(action) {
+    if (!action) throw Error ('no play action');
+    const play = document.createElement('div');
+    play.id = 'play'
+    play.classList.add('play');
+    play.addEventListener('click', action);
+    return play;
+  }
+
   static toggle(note) {
     const key = document.getElementById(note);
     const on = key.classList.toggle('on');

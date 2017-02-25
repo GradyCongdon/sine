@@ -1,9 +1,10 @@
 @import 'reset';
 
 $cyan: #30FBE6;
-$red: #F92725;
 $black: #030005;
 $white: #FCFADE;
+$green: #30FB78;
+$red: #F92725;
 
 html {
   height: 100%;
@@ -22,7 +23,7 @@ body {
 
 .content {
   margin-top: 100px;
-  width: 60%;
+  width: 90%;
   height: 100%;
   display: flex;
   justify-content: space-around;
@@ -59,6 +60,20 @@ body {
     border-color: $cyan;
     color: $cyan;
   }
+}
+
+.stop {
+  background: $red;
+  width: 25px;
+  height: 25px;
+}
+
+.play {
+  width: 0; 
+  height: 0; 
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  border-left: 22px solid $green;
 }
 
 
