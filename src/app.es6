@@ -4,10 +4,16 @@ import { Sequencer } from './sequencer.es6';
 
 var audio =  window.AudioContext || window.webkitAudioContext;
 const audioContext = new audio();
-const output = audioContext.destination;
 
+const output = audioContext.destination;
 const sequencer = new Sequencer(audioContext, 90);
-const gain = audioContext.createGain();
+
+const filter = audioContext.createBiquadFilter();
+filter.type = 'lowshelf';
+filter.frequency.value = 440;
+filter.gain.value = 25;
+filter.connect(output);
+
 
 
 let notes = [
@@ -26,7 +32,7 @@ let notes = [
   'A5',
 ];
 
-let synth = new Synth(audioContext, output);
+let synth = new Synth(audioContext, filter);
 const content = document.getElementById('content');
 
 notes.forEach((note) => {
