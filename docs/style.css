@@ -84,6 +84,11 @@ body {
   .key.ebony {
     border-color: #30FBE6;
     color: #30FBE6; }
+  .key.choice {
+    max-height: 25px;
+    margin-top: 5%;
+    border-color: #F92725;
+    color: #F92725; }
 
 .stop {
   background: #F92725;

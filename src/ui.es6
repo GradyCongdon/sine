@@ -5,13 +5,19 @@ export class UI {
   static makeKey(note, toggleAction) {
     const key = document.createElement('div');
     key.id = note;
-    key.innerHTML = note.replace('b', '♭');
     key.classList.add('key');
-
-    if (note.match('b')) key.classList.add('ebony');
-    const freq = Convert.freqFromNote(note);
+    let label;
+    let freq; 
+    if (typeof note === 'string') {
+      freq = Convert.freqFromNote(note);
+      label = note.replace('b', '♭');
+      if (note.match('b')) key.classList.add('ebony');
+    } else if (typeof note === 'number') {
+      freq = note;
+      label = String(Convert.round(freq, 1));
+    }
+    key.innerHTML = label
     key.dataset.frequency = Convert.round(freq, 3);
-
     key.addEventListener('click', toggleAction);
     return key;
   }
@@ -22,6 +28,18 @@ export class UI {
     step.id = `step-${num}`;
     step.addEventListener('click', sequence);
     return step;
+  }
+
+  static makeChoice(action, label) {
+    if (!action) throw Error ('no choice action');
+    if (!label) throw Error ('no choice label');
+    const choice = document.createElement('div');
+    choice.id = 'choice-${label}';
+    choice.classList.add('key');
+    choice.classList.add('choice');
+    choice.innerHTML = label;
+    choice.addEventListener('click', action);
+    return choice;
   }
 
   static makeStop(action) {

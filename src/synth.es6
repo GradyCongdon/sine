@@ -7,8 +7,12 @@ export class Synth {
     this.gains = {};
   }
   createNote(inputNote) {
-    const note = inputNote;
-    const freq = Convert.freqFromNote(note);
+    let freq;
+    if (typeof inputNote === 'number') {
+      freq = inputNote;
+    } else {
+      freq = Convert.freqFromNote(inputNote);
+    }
     const osc = this.createOscillator(freq);
     const gain = this.createGain();
     osc.connect(gain);
@@ -25,10 +29,10 @@ export class Synth {
   }
 
   createOscillator( freq, type = 'sine') {
-      const o = this.audioContext.createOscillator();
-      o.type = type;
-      o.frequency.value = freq;
-      return o;
+    const o = this.audioContext.createOscillator();
+    o.type = type;
+    o.frequency.value = freq;
+    return o;
   }
   toggle(key, on) {
     if (on) {

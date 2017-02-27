@@ -60,7 +60,14 @@ body {
     border-color: $cyan;
     color: $cyan;
   }
+  &.choice {
+    max-height:25px;
+    margin-top: 5%;
+    border-color: $red;
+    color: $red;
+  }
 }
+
 
 .stop {
   background: $red;
