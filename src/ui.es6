@@ -1,25 +1,44 @@
 import { Convert } from './convert.es6';
 
 export class UI {
+  static toggle(note) {
+    const key = document.getElementById(note);
+    const on = key.classList.toggle('on');
+    return on;
+  }
 
   static makeKey(note, toggleAction) {
     const key = document.createElement('div');
     key.id = note;
     key.classList.add('key');
-    let label;
-    let freq; 
-    if (typeof note === 'string') {
-      freq = Convert.freqFromNote(note);
-      label = note.replace('b', '♭');
-      if (note.match('b')) key.classList.add('ebony');
-    } else if (typeof note === 'number') {
-      freq = note;
-      label = String(Convert.round(freq, 1));
-    }
+    let {label, freq } = getLabelAndFreq(note);
     key.innerHTML = label
     key.dataset.frequency = Convert.round(freq, 3);
     key.addEventListener('click', toggleAction);
     return key;
+  }
+
+  static makeSinglet(note, toggleAction, keyboard) {
+    const singlet = document.createElement('div');
+    singlet.id = note;
+    singlet.classList.add('key');
+    singlet.classList.add('singlet');
+    let { label, freq } = getLabelAndFreq(note);
+    singlet.innerHTML = keyboard || label
+    singlet.dataset.frequency = Convert.round(freq, 3);
+    window.addEventListener('keydown', toggleAction);
+    return singlet;
+  }
+
+  static makeTriplet(triplet, target) {
+    const trip = document.createElement('div');
+    trip.classList.add('triplet');
+    if (target) {
+      triplet.forEach(s => trip.appendChild(s));
+      target.appendChild(trip);
+      return self;
+    }
+    return trip;
   }
 
   static makeStep(num) {
@@ -60,10 +79,26 @@ export class UI {
     return play;
   }
 
-  static toggle(note) {
-    const key = document.getElementById(note);
-    const on = key.classList.toggle('on');
-    return on;
+  static attachMessage2U(targetNode) {
+    const text = document.createElement('p');
+    text.classList.add('message-2-u');
+    text.innerHTML= 'press space key to stop sounds';
+    targetNode.appendChild(text);
   }
 }
 
+
+
+function getLabelAndFreq(note) {
+  let label;
+  let freq;
+  if (typeof note === 'string') {
+    freq = Convert.freqFromNote(note);
+    label = note.replace('b', '♭');
+    if (note.match('b')) key.classList.add('ebony');
+  } else if (typeof note === 'number') {
+    freq = note;
+    label = String(Convert.round(freq, 1));
+  }
+  return { label, freq };
+}

@@ -10,6 +10,10 @@ let synth = new Synth(audioContext, output);
 
 const content = document.getElementById('content');
 
+function getContent() {
+  return document.getElementById('content');
+}
+
 /*
 const filter = audioContext.createBiquadFilter();
 filter.type = 'lowshelf';
@@ -30,6 +34,19 @@ function createSynthKey(note) {
   content.appendChild(key);
 }
 
+function createSinglet(note, keyboard) {
+  const syn = synth.createNote(note);
+  const action = (event) => {
+    if (event.key == keyboard) {
+      const on = UI.toggle(note);
+      synth.toggle(note, on);
+    }
+    console.log(event.key);
+  };
+  const ui = UI.makeSinglet(note, action, keyboard);
+  return { syn , ui };
+}
+
 function normal() {
   return () => {
     content.innerHTML = '';
@@ -41,15 +58,47 @@ function normal() {
 } 
 
 // μικρός tonal
-function mikros(octaveDivisions = 31) {
+function mikros(octaveDivisions = 33) {
   return () => {
     content.innerHTML = '';
-    for (let i = 0; i < octaveDivisions; i++) {
-      let freq = 440 + i * (440 / octaveDivisions);
-      createSynthKey(freq);
+    getFreqsFromDivisions(octaveDivisions)
+      .forEach(freq => createSynthKey(freq));
+    areKeysPresent();
+  }
+}
+
+function singlets(octaveDivisions = 33) {
+  return () => {
+    content.innerHTML = '';
+    content.classList.add('keyboard');
+    const freqs = getFreqsFromDivisions(octaveDivisions);
+    const keyboard = getKeyboardFromDivisions(octaveDivisions);
+    for (let i = 0; i < freqs.length;) {
+      let triplet = [];
+      for (let j = 0; j < 3; j++) {
+        const { _, ui } = createSinglet(freqs[i], keyboard[i]);
+        triplet.push(ui);
+        i++;
+      }
+      UI.makeTriplet(triplet, getContent());
     }
     areKeysPresent();
   }
+}
+
+function getFreqsFromDivisions(octaveDivisions = 33) {
+  const freqs = [];
+  for (let i = 0; i < octaveDivisions; i++) {
+    let freq = 440 + i * (440 / octaveDivisions);
+    freqs.push(freq);
+  }
+  return freqs;
+}
+
+function getKeyboardFromDivisions(octaveDivisions = 33) {
+  const keyboard = [ 
+  'q', 'a', 'z', 'w', 's', 'x', 'e', 'd', 'c', 'r', 'f', 'v', 't', 'g', 'b', 'y', 'h', 'n', 'u', 'j', 'm', 'i', 'k', ',', 'o', 'l', '.', 'p', ';', '/', '[', "'", ']' ];
+  return keyboard;
 }
 
 function areKeysPresent() {
@@ -89,12 +138,14 @@ function addSequencer() {
 }
 
 function stopAll(event) {
-  return () => {
+  return (event) => {
+    if (event.key !== ' ') return event;
     for (let g in synth.gains) {
       synth.gains[g].gain.value = 0;
     }
     const onKeys = Array.from(content.getElementsByClassName('on'));
     onKeys.forEach(el => el.classList.remove('on'));
+    event.preventDefault();
   };
 }
 
@@ -104,18 +155,17 @@ B. scheduled changes arent stopped by clearInterval anyway
 content.appendChild(UI.makeStop(stop));
 const stop = (looper) => clearInterval(looper);
 */
+UI.attachMessage2U(content);
+const choices = document.createElement('div');
+choices.classList.add('choices');
+content.appendChild(choices);
 
-const micro31Button = UI.makeChoice(mikros(31), "microtuning \'31");
-const micro62Button = UI.makeChoice(mikros(62), "microtuning \'62");
-const micro93Button = UI.makeChoice(mikros(93), "microtuning \'93");
-const normalButton = UI.makeChoice(normal(), 'normal keys');
-content.appendChild(micro31Button);
-content.appendChild(micro62Button);
-content.appendChild(micro93Button);
-content.appendChild(normalButton);
-const text = document.createElement('p');
-text.innerHTML= '<br/>press any key to stop sound';
-content.appendChild(text);
+choices.appendChild(UI.makeChoice(singlets(33), "keyboard µtuning \'33"));
+choices.appendChild(UI.makeChoice(mikros(24), "microtuning \'24"));
+choices.appendChild(UI.makeChoice(mikros(50), "microtuning \'50"));
+choices.appendChild(UI.makeChoice(mikros(99), "microtuning \'99"));
+choices.appendChild(UI.makeChoice(normal(), 'normal keys'));
+
 areKeysPresent();
 
 window.addEventListener('keypress', stopAll());
