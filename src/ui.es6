@@ -12,6 +12,7 @@ export class UI {
     key.id = note;
     key.classList.add('key');
     let {label, freq } = getLabelAndFreq(note);
+    if (label.match('♭')) key.classList.add('ebony');
     key.innerHTML = label
     key.dataset.frequency = Convert.round(freq, 3);
     key.addEventListener('click', toggleAction);
@@ -95,7 +96,6 @@ function getLabelAndFreq(note) {
   if (typeof note === 'string') {
     freq = Convert.freqFromNote(note);
     label = note.replace('b', '♭');
-    if (note.match('b')) key.classList.add('ebony');
   } else if (typeof note === 'number') {
     freq = note;
     label = String(Convert.round(freq, 1));

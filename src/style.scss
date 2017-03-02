@@ -6,6 +6,8 @@ $white: #FCFADE;
 $green: #30FB78;
 $red: #F92725;
 
+$singlet-size: 33px;
+
 html {
   height: 100%;
   width: 100%;
@@ -22,7 +24,7 @@ body {
 }
 
 .content {
-  margin-top: 100px;
+  margin-top: 15%;
   width: 90%;
   height: 100%;
   display: flex;
@@ -30,7 +32,8 @@ body {
   flex-wrap: wrap;
 
   &.keyboard {
-    width: 450px;
+    width: ($singlet-size * 13);
+    margin-left: -$singlet-size; // for centering
   }
 }
 
@@ -39,9 +42,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 45px;
-  min-height: 45px;
-  max-height: 245px;
+  width: 45px;
+  height: 245px;
   border: 2px solid white;
   margin: 3px;
   user-select: none;
@@ -70,6 +72,7 @@ body {
     margin-top: 5%;
     border-color: $red;
     color: $red;
+    width: 100%;
   }
 }
 
@@ -99,34 +102,38 @@ body {
   width: 100%;
 }
 
-.key.singlet {
-  max-width: 33px;
-  min-width: 33px;
-  max-height: 33px;
-  min-height: 33px;
-  border: 1px solid $white;
-  font-size: 12px;
-  margin: 1px;
 
-  &:nth-child(1) {
-    margin-left: 11px;
-  }
+.key.singlet {
+  box-sizing: border-box;
+  width: $singlet-size;
+  height: $singlet-size;
+  border: 1px solid $white;
+  font-size: $singlet-size / 2.75;
+  margin: 2px;
+
   &:nth-child(2) {
-    margin-left: 22px;
+    margin-left: $singlet-size/2;
   }
   &:nth-child(3) {
-    margin-left: 33px;
+    margin-left: $singlet-size/1;
   }
 }
 
 .triplet {
-  width: 69px;
-  height: 109px;
-  margin-left: -33px;
+  width: ($singlet-size * 2) + 3;
+  height: ($singlet-size * 3) + 10;
+  margin-left: -$singlet-size; // allows overlap
   &:first-child {
     margin-left: 0px;
   }
 }
+
+.last-singlet {
+  position: relative;
+  top: -70px; // 66 + 4
+  right: -4px;
+}
+
 
 
 

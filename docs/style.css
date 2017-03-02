@@ -55,22 +55,22 @@ body {
   justify-content: center; }
 
 .content {
-  margin-top: 100px;
+  margin-top: 15%;
   width: 90%;
   height: 100%;
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap; }
   .content.keyboard {
-    width: 450px; }
+    width: 429px;
+    margin-left: -33px; }
 
 .key {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 45px;
-  min-height: 45px;
-  max-height: 245px;
+  width: 45px;
+  height: 245px;
   border: 2px solid white;
   margin: 3px;
   user-select: none;
@@ -91,7 +91,8 @@ body {
     padding: 8px;
     margin-top: 5%;
     border-color: #F92725;
-    color: #F92725; }
+    color: #F92725;
+    width: 100%; }
 
 .stop {
   background: #F92725;
@@ -115,17 +116,14 @@ body {
   width: 100%; }
 
 .key.singlet {
-  max-width: 33px;
-  min-width: 33px;
-  max-height: 33px;
-  min-height: 33px;
+  box-sizing: border-box;
+  width: 33px;
+  height: 33px;
   border: 1px solid #FCFADE;
   font-size: 12px;
-  margin: 1px; }
-  .key.singlet:nth-child(1) {
-    margin-left: 11px; }
+  margin: 2px; }
   .key.singlet:nth-child(2) {
-    margin-left: 22px; }
+    margin-left: 16.5px; }
   .key.singlet:nth-child(3) {
     margin-left: 33px; }
 
@@ -135,3 +133,8 @@ body {
   margin-left: -33px; }
   .triplet:first-child {
     margin-left: 0px; }
+
+.last-singlet {
+  position: relative;
+  top: -70px;
+  right: -4px; }

@@ -10,10 +10,6 @@ let synth = new Synth(audioContext, output);
 
 const content = document.getElementById('content');
 
-function getContent() {
-  return document.getElementById('content');
-}
-
 /*
 const filter = audioContext.createBiquadFilter();
 filter.type = 'lowshelf';
@@ -37,11 +33,11 @@ function createSynthKey(note) {
 function createSinglet(note, keyboard) {
   const syn = synth.createNote(note);
   const action = (event) => {
+    // event.key newer prop, chrome 40 didn't have it
     if (event.key == keyboard) {
       const on = UI.toggle(note);
       synth.toggle(note, on);
     }
-    console.log(event.key);
   };
   const ui = UI.makeSinglet(note, action, keyboard);
   return { syn , ui };
@@ -78,10 +74,11 @@ function singlets(octaveDivisions = 33) {
       for (let j = 0; j < 3; j++) {
         const { _, ui } = createSinglet(freqs[i], keyboard[i]);
         triplet.push(ui);
-        i++;
+        i++; // increment Outer loop
       }
-      UI.makeTriplet(triplet, getContent());
+      UI.makeTriplet(triplet, content);
     }
+    document.getElementById(freqs.pop()).classList.add('last-singlet');
     areKeysPresent();
   }
 }
@@ -111,22 +108,22 @@ function areKeysPresent() {
 
 function addSequencer() {
   const sequencer = new Sequencer(audioContext, 90);
-  sequencer.newAction(1, synth.gains['A4'].gain, 1);
+  sequencer.newAction(1, synth.gains['A4'].gain, 0.6);
   sequencer.newAction(2, synth.gains['A4'].gain, 0);
 
-  sequencer.newAction(2, synth.gains['B4'].gain, 1);
+  sequencer.newAction(2, synth.gains['B4'].gain, 0.6);
   sequencer.newAction(3, synth.gains['B4'].gain, 0);
 
-  sequencer.newAction(3, synth.gains['C4'].gain, 1);
+  sequencer.newAction(3, synth.gains['C4'].gain, 0.6);
   sequencer.newAction(4, synth.gains['C4'].gain, 0);
 
-  sequencer.newAction(5, synth.gains['G4'].gain, 1);
+  sequencer.newAction(5, synth.gains['G4'].gain, 0.6);
   sequencer.newAction(9, synth.gains['G4'].gain, 0);
 
-  sequencer.newAction(9, synth.gains['A4'].gain, 1);
+  sequencer.newAction(9, synth.gains['A4'].gain, 0.6);
   sequencer.newAction(11, synth.gains['A4'].gain, 0);
 
-  sequencer.newAction(11, synth.gains['G4'].gain, 1);
+  sequencer.newAction(11, synth.gains['G4'].gain, 0.6);
   sequencer.newAction(19, synth.gains['G4'].gain, 0);
 
   const loop = () => {
