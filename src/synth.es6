@@ -1,4 +1,5 @@
 import { Convert } from './convert.es6';
+
 export class Synth {
   constructor(context, output) {
     this.audioContext = context;

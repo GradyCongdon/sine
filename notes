@@ -1,0 +1,41 @@
+Features to add
+
+Controls (Pots)
+  Filter
+  Volume
+  Echo
+  Effects in general
+  Presets
+
+Sequencer
+  16 Step
+    fixed to start
+  show steps
+    Each can take action for any keys & controls
+  bpm
+  time signatures
+  UI that follows steps
+    Counters for loop count
+
+Keyboard
+  Ways to select different sets of keys
+    Shift keys to riase or lower starting-ending pitch
+  Other subdivisions of 33 keys
+  Ways to play more than 33
+    Shift / Control Modifiers ?
+  Drag and drop keys for modifiable keyboard
+
+Visualizer
+  Sine / FFT of playing notes
+  maybe some real visualizations (Canvas / DOM if fast enough)
+
+Output
+  Recording
+
+Fixes
+  Main page UI better centering / scaling
+  Mobile touch or "click" fix
+  Calculate column counts for screen sizes to space evenly
+  History API for next / back with choice selection
+
+
