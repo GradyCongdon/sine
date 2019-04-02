@@ -1,42 +1,47 @@
 @import 'reset';
 
-$cyan: #30FBE6;
+$cyan: #30fbe6;
 $black: #030005;
-$white: #FCFADE;
-$green: #30FB78;
-$red: #F92725;
+$white: #fcfade;
+$green: #30fb78;
+$red: #f92725;
+$blue: rgb(0, 25, 256);
 
 $singlet-size: 33px;
 
-html {
-  height: 100%;
-  width: 100%;
-}
-
 body {
-  background: $black;
-  color: $white;
   font-family: Arial;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
+  color: $white;
+  background-color: $black;
 }
 
 .content {
-  margin-top: 15%;
   width: 90%;
   height: 100%;
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
-
-  &.keyboard {
-    width: ($singlet-size * 13);
-    margin-left: -$singlet-size; // for centering
-  }
 }
 
+.keyboard {
+  width: ($singlet-size * 13);
+}
+
+nav {
+  display: flex;
+  height: 40px;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px $blue;
+  padding: 0 1em;
+}
+
+#divisions {
+  max-width: 2em;
+  border: none;
+  background-color: $black;
+  color: white;
+}
 
 .key {
   display: flex;
@@ -50,7 +55,7 @@ body {
   cursor: pointer;
 
   &:hover {
-    background: rgba(255,255,255,.1);
+    background: rgba(255, 255, 255, 0.1);
   }
 
   &.on {
@@ -67,7 +72,7 @@ body {
     color: $cyan;
   }
   &.choice {
-    max-height:25px;
+    max-height: 25px;
     padding: 8px;
     margin-top: 5%;
     border-color: $red;
@@ -76,7 +81,6 @@ body {
   }
 }
 
-
 .stop {
   background: $red;
   width: 25px;
@@ -84,8 +88,8 @@ body {
 }
 
 .play {
-  width: 0; 
-  height: 0; 
+  width: 0;
+  height: 0;
   border-top: 12px solid transparent;
   border-bottom: 12px solid transparent;
   border-left: 22px solid $green;
@@ -101,7 +105,6 @@ body {
   align-items: center;
   width: 100%;
 }
-
 
 .key.singlet {
   box-sizing: border-box;
@@ -133,8 +136,3 @@ body {
   top: -70px; // 66 + 4
   right: -4px;
 }
-
-
-
-
-
