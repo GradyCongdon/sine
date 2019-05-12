@@ -1,4 +1,4 @@
-import { Step } from './step.es6';
+import { Step } from './step.js';
 
 export class Sequencer {
   constructor(audioContext, bpm = 120) {

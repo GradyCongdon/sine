@@ -1,4 +1,4 @@
-import { Convert } from './convert.es6';
+import { Convert } from './convert.js';
 
 export class UI {
   static toggle(note) {

@@ -1,6 +1,6 @@
-import { Synth } from './synth.es6';
-import { UI } from './ui.es6';
-import { Sequencer } from './sequencer.es6';
+import { Synth } from './synth.js';
+import { UI } from './ui.js';
+import { Sequencer } from './sequencer.js';
 
 var audio = window.AudioContext || window.webkitAudioContext;
 const audioContext = new audio();
