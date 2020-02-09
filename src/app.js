@@ -29,7 +29,7 @@ function createSynthKey(note) {
   content.appendChild(key);
 }
 
-function createSinglet(note, keyboard) {
+export function createSinglet(note, keyboard) {
   const syn = synth.createNote(note);
   const action = event => {
     // event.key newer prop, chrome 40 didn't have it
@@ -183,7 +183,7 @@ function addSequencer() {
   content.appendChild(UI.makePlay(loop));
 }
 
-function stopAll(event) {
+export function stopAll(event) {
   for (let g in synth.gains) {
     synth.gains[g].gain.value = 0;
   }
