@@ -17,6 +17,20 @@ filter.connect(output);
 let synth = new Synth(audioContext, filter);
 */
 
+function createSineFromDivisions(octaveDivisions) {
+  const freqs = getFreqsFromDivisions(octaveDivisions);
+  const keyboard = getKeyboardFromDivisions(octaveDivisions);
+  const singlets = [];
+  for (let i = 0; i < freqs.length; i++) {
+    const freq = freqs[i];
+    const { synthNote, on, off } = makeSynthNode(freq);
+    const key = keyboard[i];
+    const s = (<Singlet note={freq} label={key} />);
+    singlets.push(s);
+  }
+  return singlets;
+}
+
 
 function createSynthKey(note) {
   synth.createNote(note);
@@ -29,19 +43,6 @@ function createSynthKey(note) {
   content.appendChild(key);
 }
 
-export function createSinglet(note, keyboard) {
-  const syn = synth.createNote(note);
-  const on = event => {
-    // event.key newer prop, chrome 40 didn't have it
-    if (event.key === keyboard) {
-      const on = UI.toggle(note);
-      synth.toggle(note, on);
-    }
-  };
-  const off = event => {};
-  const ui = UI.makeSinglet(note, on, off, keyboard);
-  return { syn, ui };
-}
 
 
 

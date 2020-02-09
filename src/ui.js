@@ -1,11 +1,6 @@
 import { Convert } from './convert.js';
 
 export class UI {
-  static toggle(note) {
-    const key = document.getElementById(note);
-    const on = key.classList.toggle('on');
-    return on;
-  }
 
   static makeKey(note, toggleAction) {
     const key = document.createElement('div');

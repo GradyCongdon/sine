@@ -1,66 +1,27 @@
 import { freqFromNote } from './convert.js';
 
-export class Synth {
-  constructor(ctx, output) {
-    this.audio = new SynthAudio(ctx, output);
-  }
-
-  createNote(note) {
-    this.audio.createNote(note);
-    const { on, off } = createNoteActions(note);
-
-    return {
-      name: note,
-      on, 
-      off
-    };
-  }
-}
-
-
-export class SynthAudio {
+export class SynthAudio{
 
   constructor(context, output) {
     this.audioContext = context;
     this.output = output;
-    this.notes = [];
     this.oscillators = {};
     this.gains = {};
   }
 
-  createNote(note) {
+  createNote(inputNote) {
     let freq;
-    if (typeof note === 'number') {
-      freq = note;
+    if (typeof inputNote === 'number') {
+      freq = inputNote;
     } else {
-      freq = freqFromNote(note);
+      freq = freqFromNote(inputNote);
     }
-
     const osc = this.createOscillator(freq);
     const gain = this.createGain();
     osc.connect(gain);
     osc.start();
-
-    this.oscillators[note] = osc;
-    this.gains[note] = gain;
-    this.notes.push(note);;
-
-  }
-
-  createNoteActions(note) {
-    const on = event => {
-      // event.key newer prop, chrome 40 didn't have it
-      if (event.key === keyboard) {
-        synth.toggle(note, on);
-      }
-    };
-
-    const off = event => {};
-
-    return {
-      on,
-      off,
-    };
+    this.oscillators[inputNote] = osc;
+    this.gains[inputNote] = gain;
   }
 
   createGain() {
