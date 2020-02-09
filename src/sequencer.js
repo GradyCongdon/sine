@@ -37,7 +37,7 @@ export class Sequencer {
         action.target.cancelScheduledValues();
       });
     });
-    return self;
+    return this;
   }
   boundStep(sequenceNumber) {
     if (sequenceNumber < 0 || sequenceNumber > this.sequenceLength) {
@@ -49,7 +49,7 @@ export class Sequencer {
     sequenceNumber = this.boundStep(sequenceNumber);
     const step = new Step(target, value);
     this.sequence[sequenceNumber] = step;
-    return step; // FIXME maybe self instead to chain 
+    return step; // FIXME maybe this instead to chain 
   }
   getStep(sequenceNumber) {
     sequenceNumber = this.boundStep(sequenceNumber);
@@ -66,7 +66,7 @@ export class Sequencer {
     }
 
     step.newAction(target, value);
-    return self;
+    return this;
   }
 
   scheduleSequence(skip = false) {
@@ -90,7 +90,7 @@ export class Sequencer {
     this.lastScheduledTime = schedule.slice(-1)[0] || 0;
 
     return this.lastScheduledTime; // Could be used for scheduling restart, but should be removed if not
-    // return self;
+    // return this;
   }
   currentTime() {
     return this.context.currentTime;

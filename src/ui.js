@@ -19,30 +19,7 @@ export class UI {
     return key;
   }
 
-  static makeSinglet(note, toggleAction, keyboard) {
-    const singlet = document.createElement('div');
-    singlet.id = note;
-    singlet.classList.add('key');
-    singlet.classList.add('singlet');
-    let { label, freq } = getLabelAndFreq(note);
-    singlet.innerHTML = keyboard || label
-    singlet.dataset.frequency = Convert.round(freq, 3);
-    window.addEventListener('keydown', toggleAction);
-    return singlet;
-  }
-
-  static makeTriplet(triplet, target) {
-    const trip = document.createElement('div');
-    trip.classList.add('triplet');
-    if (target) {
-      triplet.forEach(s => trip.appendChild(s));
-      target.appendChild(trip);
-      return self;
-    }
-    return trip;
-  }
-
-  static makeStep(num) {
+  static makeStep(num, sequence) {
     if (!num) throw Error ('no step number');
     const step = document.createElement('div');
     step.id = `step-${num}`;
@@ -50,17 +27,6 @@ export class UI {
     return step;
   }
 
-  static makeChoice(action, label) {
-    if (!action) throw Error ('no choice action');
-    if (!label) throw Error ('no choice label');
-    const choice = document.createElement('div');
-    choice.id = 'choice-${label}';
-    choice.classList.add('key');
-    choice.classList.add('choice');
-    choice.innerHTML = label;
-    choice.addEventListener('click', action);
-    return choice;
-  }
 
   static makeStop(action) {
     if (!action) throw Error ('no stop action');

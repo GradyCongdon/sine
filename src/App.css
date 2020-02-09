@@ -117,12 +117,12 @@ nav {
 
 .key.on {
   background: var(--white);
-  color: var(--black;
+  color: var(--black);
 }
 
 .key.on.ebony {
   background: var(--cyan);
-  color: var(--black;
+  color: var(--black);
 }
 
 .key.ebony {
@@ -166,15 +166,15 @@ nav {
 
 .key.singlet {
   box-sizing: border-box;
-  width: var(--singlet-size;
-  height: var(--singlet-size;
+  width: var(--singlet-size);
+  height: var(--singlet-size);
   border: 1px solid var(--white);
   font-size: calc(var(--singlet-size) / 2.75);
   margin: 2px;
 }
 
 .key.singlet:nth-child(2) {
-  margin-left: calc(var(--singlet-size)/2));
+  margin-left: calc(var(--singlet-size)/2);
 }
 .key.singlet:nth-child(3) {
   margin-left: calc(var(--singlet-size)/1);
@@ -192,6 +192,6 @@ nav {
 
 .last-singlet {
   position: relative;
-  top: -70px; // 66 + 4
+  top: -70px; 
   right: -4px;
 }
