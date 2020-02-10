@@ -1,27 +1,75 @@
-import { freqFromNote } from './convert.js';
+import { freqFromNote } from './convert';
+import { getFreqsFromDivisions, getKeyboardFromDivisions } from './util';
 
-export class SynthAudio{
+export class SynthAudio {
 
   constructor(context, output) {
     this.audioContext = context;
     this.output = output;
+    this.notes = [];
     this.oscillators = {};
     this.gains = {};
   }
 
-  createNote(inputNote) {
-    let freq;
-    if (typeof inputNote === 'number') {
-      freq = inputNote;
-    } else {
-      freq = freqFromNote(inputNote);
+  buildFromDivisions(octaveDivisions) {
+    const freqs = getFreqsFromDivisions(octaveDivisions);
+    const notes = createNotes(freqs);
+  }
+
+  createNotes(freqencies) {
+    const notes = [];
+    for (let i = 0; i < freqencies.length; i++) {
+      const freq = freqencies[i];
+      const { on, off } = this.createNote(freq);
+      const n = {
+        frequency: freq,
+        on,
+        off,
+      }
+      notes.push(n);
     }
+
+    return notes;
+  }
+
+  createNote(note) {
+    let freq;
+    if (typeof note === 'number') {
+      freq = note;
+    } else {
+      freq = freqFromNote(note);
+    }
+
     const osc = this.createOscillator(freq);
     const gain = this.createGain();
     osc.connect(gain);
     osc.start();
-    this.oscillators[inputNote] = osc;
-    this.gains[inputNote] = gain;
+
+    this.oscillators[note] = osc;
+    this.gains[note] = gain;
+    this.notes.push(note);;
+
+    const { on, off } = createNoteActions(note);
+    return {
+      on, 
+      off
+    };
+
+  }
+
+  createNoteActions(note) {
+    const on = event => {
+      if (event.key === keyboard) {
+        this.toggle(note, on);
+      }
+    };
+
+    const off = event => {};
+
+    return {
+      on,
+      off,
+    };
   }
 
   createGain() {

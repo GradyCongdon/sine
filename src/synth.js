@@ -1,95 +1,37 @@
-import { freqFromNote } from './convert.js';
+import Note from './Note';
 
-export class Synth {
-  constructor(ctx, output) {
-    this.audio = new SynthAudio(ctx, output);
+const keys = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','p','q','r','s','t','u','v','w','x','y','z'];
+const getKey = (l) => {
+  let i = 0;
+  if (l > 0) {
+    i = l - 1;
   }
-
-  createNote(note) {
-    this.audio.createNote(note);
-    const { on, off } = createNoteActions(note);
-
-    return {
-      name: note,
-      on, 
-      off
-    };
+  if (i < keys.length) {
+    return keys[i];
   }
+  throw new Error('long key');
+  // TODO long ones
+  // const key = [];
+  // while (i > keys.length)
 }
 
-
-export class SynthAudio {
-
-  constructor(context, output) {
-    this.audioContext = context;
-    this.output = output;
+export default class Synth {
+  constructor(audio) {
+    this.audio = audio;
     this.notes = [];
-    this.oscillators = {};
-    this.gains = {};
   }
 
-  createNote(note) {
-    let freq;
-    if (typeof note === 'number') {
-      freq = note;
-    } else {
-      freq = freqFromNote(note);
+
+  createNotes(freqencies) {
+    const notes = [];
+    for (let i = 0; i < freqencies.length; i++) {
+      const freq = freqencies[i];
+      const key = getKey(this.notes.length);
+      const n = new Note(key, this.audio, freq);
+      notes.push(n);
     }
 
-    const osc = this.createOscillator(freq);
-    const gain = this.createGain();
-    osc.connect(gain);
-    osc.start();
-
-    this.oscillators[note] = osc;
-    this.gains[note] = gain;
-    this.notes.push(note);;
-
-  }
-
-  createNoteActions(note) {
-    const on = event => {
-      // event.key newer prop, chrome 40 didn't have it
-      if (event.key === keyboard) {
-        synth.toggle(note, on);
-      }
-    };
-
-    const off = event => {};
-
-    return {
-      on,
-      off,
-    };
-  }
-
-  createGain() {
-    const g = this.audioContext.createGain();
-    g.connect(this.output);
-    g.gain.value = 0;
-    return g;
-  }
-
-  createOscillator( freq, type = 'sine') {
-    const o = this.audioContext.createOscillator();
-    o.type = type;
-    o.frequency.value = freq;
-    return o;
-  }
-
-  toggle(key, on) {
-    if (on) {
-      this.on(key);
-    } else {
-      this.off(key);
-    }
-  }
-
-  on(key, volume = 0.5) {
-    this.gains[key].gain.value = volume;
-  }
-
-  off(key) {
-    this.gains[key].gain.value = 0;
+    this.notes = notes;
+    return notes;
   }
 }

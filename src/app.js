@@ -1,33 +1,36 @@
 import React, { Component } from 'react';
+import Audio from './Audio';
 import Synth from './Synth';
-import Singlet from './Singlet';
+import SynthView from './SynthView';
+import { getFreqsFromDivisions } from './util';
 import './App.css';
+
+const createSynthFromDivisions = (audio, divisions) => {
+  const synth = new Synth(audio);
+  const freqs = getFreqsFromDivisions(divisions);
+  synth.createNotes(freqs);
+  return synth;
+}
 
 class App extends Component {
   constructor() {
     super();
+    const divisions = 33;
+    const audio = new Audio(this.audioContext);
+
+    const synth = createSynthFromDivisions(audio, 33);
+
     this.state = {
-      divisions: 33,
-      synth: Synth.createFromDivisions(this.state.divisions),
+      synth: synth,
+      divisions,
     }
   }
 
-  setDivisions(event) {
-    this.setState({
-      divisions: event.value
-    });
-  }
-
   render() {
-    const singlets = this.synth.notes.map(n => (
-      <Singlet note={n.note} on={n.on} off={n.off} label={n.label} />
-    ));
-
     return (
-      <div id="sine">
-        {singlets}
+      <div className="content">
+        <SynthView synth={this.state.synth} />
       </div>
-
     );
   }
 }
