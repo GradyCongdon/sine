@@ -1,37 +1,79 @@
-import Note from './Note';
+import React, { Component } from 'react';
+import Keyboard from './Keyboard';
+import Note, { NoteView } from './Note';
 
-const keys = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','p','q','r','s','t','u','v','w','x','y','z'];
-const getKey = (l) => {
-  let i = 0;
-  if (l > 0) {
-    i = l - 1;
-  }
-  if (i < keys.length) {
-    return keys[i];
-  }
-  throw new Error('long key');
-  // TODO long ones
-  // const key = [];
-  // while (i > keys.length)
-}
-
-export default class Synth {
-  constructor(audio) {
-    this.audio = audio;
-    this.notes = [];
-  }
+import { getFreqsFromDivisions } from './util';
 
 
-  createNotes(freqencies) {
+
+export default class Synth extends Component {
+  constructor(props) {
+    super(props);
+    const { webAudio, divisions } = props;
+
+    const keyboard = new Keyboard(divisions);
+    const freqencies = getFreqsFromDivisions(divisions);
+
     const notes = [];
     for (let i = 0; i < freqencies.length; i++) {
       const freq = freqencies[i];
-      const key = getKey(this.notes.length);
-      const n = new Note(key, this.audio, freq);
+      const osc = new Oscillator(webAudio, freq);
+
+      const key = keyboard.get(i);
+      const n = new Note(osc, key);
       notes.push(n);
     }
 
-    this.notes = notes;
-    return notes;
+    this.state = {
+      webAudio,
+      keyboard,
+      notes,
+    }
   }
+
+  render() {
+    return (
+      <SynthView notes={this.state.notes} />
+    );
+  }
+
 }
+
+
+const row = (n, i, len) => i !== len - 1 ? (i + 1) % n :  (i + (n - 1)) % n;
+const col = (n, i, len) => i !== len - 1 ? `${i + 1} / span ${n}` : `${i + (n - 1)} / span ${n}`;
+// const color = (n, i, len) => i !== len - 1 ? 'white' :  'red';
+
+function SynthView({notes}) {
+  const len = notes.length;
+  const noteViews = notes.map((n,i) => {
+    const style = {
+      gridRow: row(3, i, len),
+      gridColumn: col(3, i, len),
+    }
+    console.log('name', n.name);
+    return (
+      <Note
+        key={i} 
+        style={style} 
+        name={n.name} 
+        on={n.on}
+      />
+    );
+  });
+
+  const style = {
+    display: 'grid',
+    gridTemplateColumns: `repeat(36, 11px)`,
+    gridTemplateRows: `repeat(3, 33px)`,
+    gridGap: '1px'
+  }
+
+  return (
+    <div id="synth" style={style}>
+      {noteViews}
+    </div>
+  );
+}
+
+

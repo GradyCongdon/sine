@@ -173,28 +173,3 @@ nav {
   margin: 2px;
 }
 
-/*
- * find a more math based way to align
-.key.singlet:nth-child(2) {
-  margin-left: calc(var(--singlet-size)/2);
-}
-.key.singlet:nth-child(3) {
-  margin-left: calc(var(--singlet-size)/1);
-}
-*/
-
-.triplet {
-  width: calc(var(--singlet-size * 2) + 3);
-  height: calc(var(--singlet-size * 3) + 10);
-  margin-left: -var(--singlet-size);
-}
-
-.triplet:first-child {
-  margin-left: 0px;
-}
-
-.last-singlet {
-  position: relative;
-  top: -70px; 
-  right: -4px;
-}

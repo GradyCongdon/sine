@@ -1,5 +1,5 @@
 import { freqFromNote } from './convert';
-import { getFreqsFromDivisions, getKeyboardFromDivisions } from './util';
+import { getFreqsFromDivisions } from './util';
 
 export class SynthAudio {
 

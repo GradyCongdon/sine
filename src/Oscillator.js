@@ -1,18 +1,21 @@
 
 export default class Oscillator {
-  constructor(audio, frequency, type = 'sine') {
-    const osc = audio.ctx.createOscillator();
+  constructor(webAudio, frequency, type = 'sine') {
+    console.log('OSC', frequency);
+    const osc = webAudio.ctx.createOscillator();
     osc.type = type;
     osc.frequency.value = frequency;
     this.oscillator = osc;
 
-    const gain = audio.ctx.createGain();
-    gain.connect(audio.output);
+    const gain = webAudio.ctx.createGain();
+    gain.connect(webAudio.output);
     gain.gain.value = 0;
     this.gain = gain;
 
     osc.connect(gain);
-    osc.start();
+  }
+  start() {
+    this.osciallator.start();
   }
 
   get volume() {

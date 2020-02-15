@@ -1,18 +1,24 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import Oscillator from './Oscillator';
+// View
+import { round } from './convert';
 
 const up = false;
 const down = true;
 
 export default class Note extends Component {
-  constructor(name, audio, frequency) {
-    super();
+  constructor(props) {
+    super(props);
+    const { name, webAudio, frequency} = props;
+    this.name = name;
+
     this.state = {
       postion: down,
-      oscillator: new Oscillator(audio, frequency, 'sine'),
+      oscillator: new Oscillator(this.props.webAudio, this.props.frequency, 'sine'),
     }
-    this.on.bind(this);
-    this.off.bind(this);
+
+    this.on = this.on.bind(this);
+    this.off = this.off.bind(this);
   }
 
   get frequency() {
@@ -33,4 +39,17 @@ export default class Note extends Component {
     this.state.oscillator.off();
   }
 
+}
+
+export function NoteView({name, style, on}) {
+  return (
+    <div 
+      className="key singlet" 
+      id={name}
+      style={style}
+      onClick={on}
+    >
+      {name}
+    </div>
+  );
 }
