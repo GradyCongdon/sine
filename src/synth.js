@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Oscillator from './Oscillator';
 import Keyboard from './Keyboard';
 import Note, { NoteView } from './Note';
 
@@ -13,27 +14,18 @@ export default class Synth extends Component {
 
     const keyboard = new Keyboard(divisions);
     const freqencies = getFreqsFromDivisions(divisions);
-
-    const notes = [];
-    for (let i = 0; i < freqencies.length; i++) {
-      const freq = freqencies[i];
-      const osc = new Oscillator(webAudio, freq);
-
-      const key = keyboard.get(i);
-      const n = new Note(osc, key);
-      notes.push(n);
-    }
+    const oscillators = freqencies.map(f => new Oscillator(webAudio, f));
 
     this.state = {
       webAudio,
       keyboard,
-      notes,
+      oscillators,
     }
   }
 
   render() {
     return (
-      <SynthView notes={this.state.notes} />
+      <SynthView oscillators={this.state.oscillators} keyboard={this.state.keyboard} />
     );
   }
 
@@ -44,20 +36,20 @@ const row = (n, i, len) => i !== len - 1 ? (i + 1) % n :  (i + (n - 1)) % n;
 const col = (n, i, len) => i !== len - 1 ? `${i + 1} / span ${n}` : `${i + (n - 1)} / span ${n}`;
 // const color = (n, i, len) => i !== len - 1 ? 'white' :  'red';
 
-function SynthView({notes}) {
-  const len = notes.length;
-  const noteViews = notes.map((n,i) => {
+function SynthView({oscillators, keyboard}) {
+  const len = oscillators.length;
+  const noteViews = oscillators.map((o,i) => {
     const style = {
       gridRow: row(3, i, len),
       gridColumn: col(3, i, len),
     }
-    console.log('name', n.name);
+    const key = keyboard.get(i);
     return (
       <Note
-        key={i} 
+        key={key} 
         style={style} 
-        name={n.name} 
-        on={n.on}
+        name={key}
+        oscillator={o}
       />
     );
   });

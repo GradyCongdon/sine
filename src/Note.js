@@ -9,12 +9,12 @@ const down = true;
 export default class Note extends Component {
   constructor(props) {
     super(props);
-    const { name, webAudio, frequency} = props;
+    const { name, oscillator } = props;
     this.name = name;
 
     this.state = {
       postion: down,
-      oscillator: new Oscillator(this.props.webAudio, this.props.frequency, 'sine'),
+      oscillator: oscillator
     }
 
     this.on = this.on.bind(this);
@@ -37,6 +37,13 @@ export default class Note extends Component {
   off() {
     this.setState({position: up});
     this.state.oscillator.off();
+  }
+
+  render() {
+    return (
+      <NoteView name={this.props.name} style={this.props.style} on={this.on}/>
+    );
+
   }
 
 }
