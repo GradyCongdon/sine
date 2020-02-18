@@ -25,44 +25,35 @@ export default class Synth extends Component {
 
   render() {
     return (
-      <SynthView oscillators={this.state.oscillators} keyboard={this.state.keyboard} />
+      <SynthView 
+        oscillators={this.state.oscillators}
+        keyboard={this.state.keyboard}
+      />
     );
   }
 
 }
 
 
-const row = (n, i, len) => i !== len - 1 ? (i + 1) % n :  (i + (n - 1)) % n;
-const col = (n, i, len) => i !== len - 1 ? `${i + 1} / span ${n}` : `${i + (n - 1)} / span ${n}`;
-// const color = (n, i, len) => i !== len - 1 ? 'white' :  'red';
 
 function SynthView({oscillators, keyboard}) {
   const len = oscillators.length;
-  const noteViews = oscillators.map((o,i) => {
-    const style = {
-      gridRow: row(3, i, len),
-      gridColumn: col(3, i, len),
-    }
-    const key = keyboard.get(i);
+  const noteViews = oscillators.map((osc,i) => {
+    const keyStyle = Keyboard.getKeyStyle(i, len);
+    const letter = keyboard.get(i);
     return (
       <Note
-        key={key} 
-        style={style} 
-        name={key}
-        oscillator={o}
+        key={letter}
+        style={keyStyle} 
+        name={letter}
+        oscillator={osc}
       />
     );
   });
 
-  const style = {
-    display: 'grid',
-    gridTemplateColumns: `repeat(36, 11px)`,
-    gridTemplateRows: `repeat(3, 33px)`,
-    gridGap: '1px'
-  }
-
+  const containerStyle = Keyboard.getContainerStyle(33);
   return (
-    <div id="synth" style={style}>
+    <div id="synth" style={containerStyle}>
       {noteViews}
     </div>
   );

@@ -44,7 +44,7 @@ export default class Note extends Component {
       <NoteView 
         name={this.props.name}
         style={this.props.style}
-        on={this.toggle}
+        toggle={this.toggle}
         playing={this.state.playing}
       />
     );
@@ -53,7 +53,7 @@ export default class Note extends Component {
 
 }
 
-export function NoteView({name, style, on, playing}) {
+export function NoteView({name, style, toggle, playing}) {
   const s = {
     backgroundColor: playing ? 'red' : 'transparent',
   }
@@ -62,7 +62,7 @@ export function NoteView({name, style, on, playing}) {
       className="key singlet" 
       id={name}
       style={{...style, ...s}}
-      onClick={on}
+      onClick={toggle}
     >
       {name}
     </div>
