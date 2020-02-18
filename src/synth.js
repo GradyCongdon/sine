@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Oscillator from './Oscillator';
 import Keyboard from './Keyboard';
-import Note, { NoteView } from './Note';
+import Note from './Note';
 
 import { getFreqsFromDivisions } from './util';
 

@@ -1,10 +1,4 @@
 import React, { Component } from 'react';
-import Oscillator from './Oscillator';
-// View
-import { round } from './convert';
-
-const up = false;
-const down = true;
 
 export default class Note extends Component {
   constructor(props) {
@@ -13,7 +7,7 @@ export default class Note extends Component {
     this.name = name;
 
     this.state = {
-      postion: down,
+      playing: false,
       oscillator: oscillator
     }
 
@@ -30,30 +24,38 @@ export default class Note extends Component {
   }
 
   on() {
-    this.setState({position: down});
+    this.setState({playing: true});
     this.state.oscillator.on();
   }
 
   off() {
-    this.setState({position: up});
+    this.setState({playing: false});
     this.state.oscillator.off();
   }
 
   render() {
     return (
-      <NoteView name={this.props.name} style={this.props.style} on={this.on}/>
+      <NoteView 
+        name={this.props.name}
+        style={this.props.style}
+        on={this.on}
+        playing={this.state.playing}
+      />
     );
 
   }
 
 }
 
-export function NoteView({name, style, on}) {
+export function NoteView({name, style, on, playing}) {
+  const s = {
+    backgroundColor: playing ? 'red' : 'transparent',
+  }
   return (
     <div 
       className="key singlet" 
       id={name}
-      style={style}
+      style={{...style, ...s}}
       onClick={on}
     >
       {name}
