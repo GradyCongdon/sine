@@ -5,10 +5,10 @@ export default class Oscillator {
     osc.type = type;
     osc.frequency.value = frequency;
     this.oscillator = osc;
-    this.statrted = false;
+    this.started = false;
 
     const gain = webAudio.ctx.createGain();
-    gain.connect(webAudio.output);
+    gain.connect(webAudio.ctx.destination);
     gain.gain.value = 0;
     this.gain = gain;
 
@@ -21,19 +21,19 @@ export default class Oscillator {
   }
 
   get volume() {
-    return this.gain.value;
+    return this.gain.gain.value;
   }
 
   set volume(volume) {
-    this.gain.value = volume;
+    this.gain.gain.value = volume;
   }
 
   on(volume = 0.5) {
     if (!this.started) this.start();
-    this.gain.value = volume;
+    this.volume = volume; 
   }
 
   off() {
-    this.gain.value = 0;
+    this.volume = 0.0; 
   }
 }

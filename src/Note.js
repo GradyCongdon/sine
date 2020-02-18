@@ -13,6 +13,7 @@ export default class Note extends Component {
 
     this.on = this.on.bind(this);
     this.off = this.off.bind(this);
+    this.toggle = this.toggle.bind(this);
   }
 
   get frequency() {
@@ -33,12 +34,17 @@ export default class Note extends Component {
     this.state.oscillator.off();
   }
 
+  toggle() {
+    return this.state.playing ? this.off() : this.on();
+  }
+
+
   render() {
     return (
       <NoteView 
         name={this.props.name}
         style={this.props.style}
-        on={this.on}
+        on={this.toggle}
         playing={this.state.playing}
       />
     );
