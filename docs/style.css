@@ -55,7 +55,6 @@ body {
   justify-content: center; }
 
 .content {
-  margin-top: 15%;
   width: 90%;
   height: 100%;
   display: flex;
@@ -63,7 +62,9 @@ body {
   flex-wrap: wrap; }
   .content.keyboard {
     width: 429px;
-    margin-left: -33px; }
+    margin-left: -33px; 
+    margin-top: 15%;
+  }
 
 .key {
   display: flex;
